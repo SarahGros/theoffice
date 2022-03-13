@@ -1,0 +1,24 @@
+body{
+  background-image: url("../assets/background.jpeg");
+  background-size: cover;
+
+}
+
+.main{
+  display: grid;
+  grid-template-rows: 20% 80%;
+  width: 87%;
+}
+
+.product {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 60%);
+  column-gap: 30px;
+}
+.menu_gauche{
+  grid-column: 1;
+  grid-row: 1/4;
+}
+
+

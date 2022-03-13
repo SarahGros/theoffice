@@ -1,0 +1,21 @@
+<!--Une partie gauche  présentant l’image du produit
+à laquelle se superpose sa quantité
+Une partie droite divisée en :
+o Une partie haute présentant la barre de progression de la production
+qui indique aussi le gain qui sera généré.
+Ne vous occupez pas pour l’instant du rendu de cette barre de progression,
+ vous réserverez simplement l’espace qui lui sera nécessaire.
+o Une partie basse qui permet d’acheter plus de ce produit et
+qui indique également la quantité qui sera acheté et le coût associé,
+avec à coté le temps qui reste à s’écouler pour que la production du produit soit complète.
+-->
+<div class="product" >
+  <div class="name">{{qtmulti}}</div>
+  <mat-progress-bar class="progressbar" [value]="progressbarvalue"></mat-progress-bar>
+  <img class="img" (click)="startFabrication()" [src]="product.logo" [alt]="product">
+  <div class="prix"> {{product.croissance}}</div>
+  <div class="cout"> {{product.cout}}</div>
+  <div class="gain"> {{product.revenu}}</div>
+  <div class="quantite"> {{product.quantite}}</div>
+  <div class="temps"> {{product.timeleft}}</div>
+</div>

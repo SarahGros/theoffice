@@ -1,0 +1,18 @@
+<!--icône et nom du monde ,
+l’argent du joueur, le bouton de quantité d’achat et
+un champ texte permettant au joueur de saisir son nom ;-->
+<div class="header">
+  <div logo>
+    <img *ngIf="isLoaded" [attr.src]="world.logo">
+    <span *ngIf="isLoaded" id="worldname"> {{world.name}} </span>
+  </div>
+  <div>
+    <span *ngIf="isLoaded" id="worldmoney"[innerHTML]="world.money | bigvalue"> </span>
+  </div>
+  <div>
+    <span *ngIf="isLoaded" id="worldMultiplicateur"> {{world.score}} </span>
+  </div>
+  <div>
+    <span *ngIf="isLoaded" id="idjoueur"> {{user}} </span>
+  </div>
+</div>

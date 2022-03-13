@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-menu-gauche',
@@ -10,6 +10,12 @@ export class MenuGaucheComponent implements OnInit {
   @Output() clickOnManager : EventEmitter<boolean> = new
   EventEmitter<boolean>();
 
+  @Output() clickOnUnlocks : EventEmitter<boolean> = new
+  EventEmitter<boolean>();
+
+  @Input() badgeManager: number = 0;
+  @Input() badgeUnlocks: number = 0;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -17,6 +23,10 @@ export class MenuGaucheComponent implements OnInit {
 
   onClickManager(){
     this.clickOnManager.emit();
+  }
+
+  onClickUnlocks(){
+    this.clickOnUnlocks.emit();
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { RestserviceService } from './restservice.service';
 import {Product, World, Pallier} from "./models/world";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,10 @@ export class AppComponent {
   worldMoney!: number;
   isLoaded: boolean = false;
   showManager: boolean = false;
+  nombreManagerPouvantEtreRecrute: number = 0;
+  showUnlocks: boolean = false;
+  username!: string;
+  isUsername!: boolean;
 
 
   getServer(): string {
@@ -46,7 +51,8 @@ export class AppComponent {
   }
 
 
-  constructor(public service: RestserviceService) {
+  constructor(public service: RestserviceService,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit(){
@@ -73,8 +79,13 @@ export class AppComponent {
   }
 // méthode qui augmente l’argent (et le score) du joueur en fonction de ce que rapporte la production du produit
   onProductionDone(p: Product) {
+    this.nombreManagerPouvantEtreRecrute = 0;
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
+    // On regarde pour chaque manager si on peut le débloquer
+    for(let m in this.world.managers.pallier){
+      if(this.world.managers.pallier[m].seuil < this.world.money && !this.world.managers.pallier[m].unlocked) this.nombreManagerPouvantEtreRecrute++;
+    }
   }
 //x1,x10,x100 uniquement si le joueur est en capacité financière d’acheter la quantité spécifiée.
   //quand le bouton commutateur est sur la position Max, il s’agit de calculer la quantité maximale achetable par le joueur de ce produit, et d’inscrire cette quantité dans le bouton d’achat.
@@ -95,6 +106,30 @@ export class AppComponent {
   }
   onBuyDone(c: number) {
     this.world.money -= c;
+    console.log("ici");
+
+    // puisque achat de quantité pour un produit, on vérifie si les unlocks sont déblocables
+    for(let x in this.products){
+      for(let y in this.products[x].palliers.pallier){
+        // Pour chaque pallier de chaque produit
+        // si le seuil est plus petit ou égal à la quantité du dis produit
+        // on l'unlock
+        console.log(this.products[x].name + " " +this.products[x].palliers.pallier[y].seuil + " " +this.products[x].quantite)
+        if(this.products[x].palliers.pallier[y].seuil <= this.products[x].quantite && !this.products[x].palliers.pallier[y].unlocked){
+          console.log("okkk");
+          this.products[x].palliers.pallier[y].unlocked = true;
+          if(this.products[x].palliers.pallier[y].typeratio == 'vitesse'){
+            this.products[x].vitesse = this.products[x].vitesse/this.products[x].palliers.pallier[y].ratio;
+          } else if(this.products[x].palliers.pallier[y].typeratio == 'gain'){
+            this.products[x].revenu = this.products[x].revenu * this.products[x].palliers.pallier[y].ratio;
+          }
+          this.snackBar.open('L\'unlock ' + this.products[x].palliers.pallier[y].name+
+            ' pour le produit '+ this.products[x].name +
+            ' a été débloqué ! ' + this.products[x].palliers.pallier[y].typeratio + '*'+
+            this.products[x].palliers.pallier[y].ratio, "", {duration: 2000});
+        }
+      }
+    }
   }
 
   onClickManager() {
@@ -104,4 +139,47 @@ export class AppComponent {
       this.showManager = true;
     }
   }
+
+  onClickUnlocks(){
+    if(this.showUnlocks){
+      this.showUnlocks = false;
+    } else {
+      this.showUnlocks = true;
+    }
+
+  }
+
+  onRecruterManager(manager: any){
+    console.log(this.world.money);
+    if(this.world.money < manager.seuil) {
+      this.snackBar.open('Pas assez d\'argent, achat impossible.', "", {duration: 2000});
+    } else if(this.world.products.product[manager.idcible-1].quantite <= 0){
+      this.snackBar.open('Vous ne pouvez pas recruter '+manager.name+' si le produit n\'est pas débloqué !', "", {duration: 2000});
+    } else {
+      // Achat d'un manager
+      this.snackBar.open(manager.name+" est recruté!", "", {duration: 2000});
+      // on enleve l'argent
+      this.world.money -= manager.seuil;
+      // on passe le statut du manager a unlocked
+      manager.unlocked = true;
+      // on passe le statut managerUnlocked du produit a vrai
+      this.world.products.product[manager.idcible-1].managerUnlocked = true;
+      this.products = this.world.products.product;
+      this.showManager = false;
+      this.nombreManagerPouvantEtreRecrute--;
+    }
+  }
+
+  onUsernameChanged(){
+    if(this.username.length != 0){
+      this.isUsername = true;
+      localStorage.setItem("username", this.username);
+    }
+  }
+
+  onUsernameRandom(){
+    this.username = Math.floor(Math.random() * 10000) + 'Concombre';
+    this.onUsernameChanged();
+  }
+
 }

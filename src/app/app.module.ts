@@ -9,6 +9,11 @@ import { ProductComponent } from './product/product.component';
 import { MenuGaucheComponent } from './menu-gauche/menu-gauche.component';
 import { BigvaluePipe } from './bigvalue.pipe';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatBadgeModule} from "@angular/material/badge";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,9 +29,20 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    MatSnackBarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule,
+    FormsModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

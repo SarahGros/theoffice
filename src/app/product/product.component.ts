@@ -92,15 +92,23 @@ export class ProductComponent implements OnInit {
   }
 
   calcScore(){
+    // si le manager est unlocké
+    if(this.product.managerUnlocked && this.product.quantite > 0 && !this.debutFabrication){
+      this.lastupdate = Date.now();
+      this.product.timeleft = this.product.vitesse;
+      this.progressbarvalue = 100;
+      this.debutFabrication = true;
+    }
     if (this.product.timeleft == 0){
       //je ne fais rien car la production n'a pas été lancé
-    }else if (this.timeleft!=0 && this.debutFabrication){
+    }else if ((this.timeleft!=0 && this.debutFabrication)){
       this.product.timeleft = this.product.timeleft - (Date.now()-this.lastupdate);
       this.lastupdate=Date.now();
       if (this.product.timeleft <= 0){
         this.product.timeleft=0;
         this.progressbarvalue = 0;
         this.notifyProduction.emit(this.product);
+        this.debutFabrication = false;
       }else{
         this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100
       }

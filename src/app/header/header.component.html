@@ -7,7 +7,7 @@ un champ texte permettant au joueur de saisir son nom ;-->
     <span *ngIf="isLoaded" id="worldname"> {{world.name}} </span>
   </div>
   <div>
-    <span *ngIf="isLoaded" id="worldmoney"[innerHTML]="world.money | bigvalue"> </span>
+    <span *ngIf="isLoaded" id="worldmoney"[innerHTML]="_worldMoney | bigvalue"> </span>
   </div>
   <div>
     <span *ngIf="isLoaded" id="worldMultiplicateur"> {{world.score}} </span>

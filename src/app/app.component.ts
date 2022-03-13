@@ -18,6 +18,7 @@ export class AppComponent {
   qtmulti: number=1;
   worldMoney!: number;
   isLoaded: boolean = false;
+  showManager: boolean = false;
 
 
   getServer(): string {
@@ -53,7 +54,6 @@ export class AppComponent {
     this.service.getWorld().then((e)=>{
       this.world = e;
       console.log(this.world);
-      this.worldMoney = this.world.money;
       this.products = this.world.products.product;
       this.isLoaded = true;
     });
@@ -73,8 +73,8 @@ export class AppComponent {
   }
 // méthode qui augmente l’argent (et le score) du joueur en fonction de ce que rapporte la production du produit
   onProductionDone(p: Product) {
-    this.world.money = this.world.money + (p.revenu * p.quantite) * (1 + (this.world.activeangels * this.world.angelbonus / 100));
-    this.world.score = this.world.score + (p.revenu * p.quantite) * (1 + (this.world.activeangels * this.world.angelbonus / 100));
+    this.world.money = this.world.money + p.revenu;
+    this.world.score = this.world.score + p.revenu;
   }
 //x1,x10,x100 uniquement si le joueur est en capacité financière d’acheter la quantité spécifiée.
   //quand le bouton commutateur est sur la position Max, il s’agit de calculer la quantité maximale achetable par le joueur de ce produit, et d’inscrire cette quantité dans le bouton d’achat.
@@ -91,6 +91,17 @@ export class AppComponent {
     } else if (this.MultiplicateurButton === 'xMax') {
       this.MultiplicateurButton = 'x1';
       this.qtmulti = 1;
+    }
+  }
+  onBuyDone(c: number) {
+    this.world.money -= c;
+  }
+
+  onClickManager() {
+    if(this.showManager){
+      this.showManager = false;
+    } else {
+      this.showManager = true;
     }
   }
 }

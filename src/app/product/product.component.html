@@ -10,12 +10,13 @@ qui indique également la quantité qui sera acheté et le coût associé,
 avec à coté le temps qui reste à s’écouler pour que la production du produit soit complète.
 -->
 <div class="product" >
-  <div class="name">{{qtmulti}}</div>
+  <div class="name">
+    <button (click)="onBuy()" [disabled]="pauvre">Acheter{{_qtmulti}}</button>
+  </div>
   <mat-progress-bar class="progressbar" [value]="progressbarvalue"></mat-progress-bar>
   <img class="img" (click)="startFabrication()" [src]="product.logo" [alt]="product">
-  <div class="prix"> {{product.croissance}}</div>
-  <div class="cout"> {{product.cout}}</div>
-  <div class="gain"> {{product.revenu}}</div>
-  <div class="quantite"> {{product.quantite}}</div>
-  <div class="temps"> {{product.timeleft}}</div>
+  <div class="cout">Cout:{{product.cout | number: '1.0-2'}}</div>
+  <div class="gain">Revenu:{{product.revenu}}</div>
+  <div class="quantite">Qtt:{{product.quantite}}</div>
+  <div class="temps">TR:{{product.timeleft}}</div>
 </div>

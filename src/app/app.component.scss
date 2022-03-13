@@ -21,4 +21,55 @@ body{
   grid-row: 1/4;
 }
 
+.modal {
+  position: fixed; /* reste en place */
+  z-index: 2; /* au dessus du reste */
+  width: 800px; /* largeur */
+  height: 800px; /* hauteur */
+  overflow: auto; /* barre de scroll si besoin */ background-color: white; /* opaque */
+  border: solid;
+  top:10; /* a 10% du haut */ left:20%; /* a 20% de la gauche */
+}
+
+
+img{
+  width: 70px;
+  height: auto;
+  margin-left: 10px;
+}
+.title{
+  text-align: center;
+}
+button{
+  margin-right: 10px;
+}
+.managerslayout{
+  display: table;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+.managerslayout:hover{
+  border-radius: 10px;
+  background-color: lightblue;
+}
+.logo{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.managername{
+  margin-top: 10px;
+  font-weight: bold;
+  color: #0ca6e3;
+}
+
+.managercible{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size:85%;
+  color : grey;
+}
+.managercost{
+  margin-bottom: 10px;
+}
 

@@ -11,7 +11,12 @@ export class HeaderComponent implements OnInit {
   server!:"localhost";
   user!: "";
   world! : World;
+  _worldMoney!: number;
   isLoaded: boolean = false;
+
+  @Input() set worldMoney(valeur: number){
+    this._worldMoney = valeur;
+  }
 
   constructor(public service: RestserviceService) {
     service.getWorld().then(

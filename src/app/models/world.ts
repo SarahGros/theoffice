@@ -1,7 +1,7 @@
 
 export class World {
-    name : string = ""
-    logo : string = ""
+    name!: string;
+    logo: string = ""
     money: number = 0
     score: number = 0
     totalangels: number = 0
@@ -32,7 +32,7 @@ export class Product {
     revenu: number = 0
     vitesse: number = 0
     quantite: number = 0
-    timeleft: number = 0
+    timeleft!: number;
     managerUnlocked: boolean = false
     palliers : { "pallier" : Pallier[]};
 

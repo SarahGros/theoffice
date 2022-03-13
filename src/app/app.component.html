@@ -4,17 +4,35 @@ décrivant des éléments supplémentaires du jeu ;
 • Une partie centrale listant les produits et leurs éléments d’interaction.
 -->
 <body *ngIf="isLoaded" >
-<app-header></app-header>
+<app-header [worldMoney]="world.money"></app-header>
 <button (click)="multiplicateurAchatProduit()">{{MultiplicateurButton}}</button>
 
 <div class="main">
   <div class="menu_gauche">
-    <app-menu-gauche></app-menu-gauche>
+    <app-menu-gauche (clickOnManager)="onClickManager()"></app-menu-gauche>
   </div>
   <div class="product">
     <div *ngFor="let currentProduct of products">
-      <app-product [worldMoney]="worldMoney" [qtmulti]="qtmulti" [prod]="currentProduct" class="product col-md-6" (notifyProduction)="onProductionDone($event)"></app-product>
+      <app-product [worldMoney]="world.money" [qtmulti]="qtmulti" [prod]="currentProduct" class="product col-md-6" (notifyProduction)="onProductionDone($event)" (notifyOnBuy)="onBuyDone($event)"></app-product>
     </div>
+  </div>
+  <div *ngIf="showManager" class="modal">
+    <div><h1 class="title">Les managers</h1></div> <div>
+    <div *ngFor="let manager of world.managers.pallier">
+      <div class="managerslayout">
+        <div>
+          <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
+        </div>
+        <div class="managername">Nom:{{ manager.name}} </div>
+        <div class="managercible">Cible:{{ world.products.product[manager.idcible-1].name}}
+          <div class="managercost">Seuil:{{ manager.seuil}} </div> </div>
+        <div>
+          <div class="hirebutton"
+               [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Engager !</div> </div>
+      </div>
+    </div>
+    <button class="closebutton" mat-raised-button color="primary" (click)="showManager = !showManager">Fermer</button>
+  </div>
   </div>
 </div>
 <!--<mat-slider min="1" max="100" step="1" value="50"></mat-slider>-->

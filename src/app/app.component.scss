@@ -1,7 +1,6 @@
 body{
   background-image: url("../assets/background.jpeg");
   background-size: cover;
-
 }
 
 .main{
@@ -30,7 +29,6 @@ body{
   border: solid;
   top:10; /* a 10% du haut */ left:20%; /* a 20% de la gauche */
 }
-
 
 img{
   width: 70px;
@@ -71,6 +69,13 @@ button{
 }
 .managercost{
   margin-bottom: 10px;
+}
+.hirebutton{
+  border: 1px solid black;
+}
+
+.hirebutton:hover{
+  cursor: pointer;
 }
 
 .hirebutton{

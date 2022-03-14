@@ -16,8 +16,8 @@ avec à coté le temps qui reste à s’écouler pour que la production du p
   </div>
   <mat-progress-bar class="progressbar" [value]="progressbarvalue"></mat-progress-bar>
   <img class="img" (click)="startFabrication()" [src]="product.logo" [alt]="product">
-  <div class="cout">Cout:{{product.cout | number: '1.0-2'}}</div>
+  <div class="cout">{{product.cout | number: '1.0-2'}} $</div>
   <div class="gain">Revenu:{{product.revenu}}</div>
-  <div class="quantite">Qtt:{{product.quantite}}</div>
-  <div class="temps">Temps:{{product.timeleft | date: 'mm:ss'}}s</div>
+  <div class="quantite">{{product.quantite}}</div>
+  <div class="temps">{{product.timeleft | date: 'mm:ss'}} s</div>
 </div>

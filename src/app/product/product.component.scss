@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: 110px 1fr 1fr;
   grid-template-rows: 1fr fit-content(20px);
-  background-color: red;
+  background-color: #FFFFFF;
+  opacity: 0.1;
   width: 100%;
   margin-bottom: 50px;
 }

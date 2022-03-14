@@ -5,14 +5,16 @@
 </div>
 
 <body *ngIf="isLoaded && isUsername">
-<app-header [worldMoney]="world.money"></app-header>
+<app-header [worldMoney]="world.money" [username]="username"></app-header>
 <button id="multiplicateurButton" (click)="multiplicateurAchatProduit()">{{MultiplicateurButton}}</button>
 
 <div class="main">
   <div class="menu_gauche">
     <app-menu-gauche [badgeManager]="nombreManagerPouvantEtreRecrute"
+                     [badgeCashUpgrade]="nombreCashUpgradePouvantEtreDebloque"
                      (clickOnManager)="onClickManager()"
-                     (clickOnUnlocks)="onClickUnlocks()"></app-menu-gauche>
+                     (clickOnUnlocks)="onClickUnlocks()"
+                     (clickOnCashUpgrade)="onClickCashUpgrade()"></app-menu-gauche>
   </div>
   <div class="product">
     <div *ngFor="let currentProduct of products">
@@ -48,7 +50,7 @@
             <div class="logo"><img id="imgmanager" class="round" [attr.src]="server+manager.logo"/></div>
           </div>
           <div class="name">{{ manager.name}} </div>
-          <div class="cible">Takes charge of {{ world.products.product[manager.idcible - 1].name}}s</div>
+          <div class="cible">Takes charge of {{ world.products.product[manager.idcible - 1].name}}s.{{manager.seuil}}$</div>
 
           <div class="hirebutton" (click)="onRecruterManager(manager)"
                [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
@@ -58,6 +60,28 @@
     </div>
     </div>
   </div>
+<div *ngIf="showCashUpgrades" class="modal">
+  <div><h1 class="title">Les cash upgrades !</h1></div>
+  <div>
+    <button class="closebutton" mat-raised-button color="primary" (click)="showCashUpgrades = !showCashUpgrades">Fermer
+    </button>
+    <div *ngFor="let cashUpgrade of world.upgrades.pallier">
+      <div class="layout" *ngIf="!cashUpgrade.unlocked">
+        <div>
+          <div class="logo"><img id="imgmanager" class="round" [attr.src]="server+cashUpgrade.logo"/></div>
+        </div>
+        <div class="name">{{ cashUpgrade.name}} </div>
+        <div class="cible">Takes charge of {{ world.products.product[cashUpgrade.idcible - 1].name}}s.{{cashUpgrade.seuil}}$.
+          <br/>{{cashUpgrade.typeratio}}*{{cashUpgrade.ratio}}
+        </div>
+
+        <div class="hirebutton" (click)="onBuyCashUpgrade(cashUpgrade)"
+             [ngClass]="{'selectable' : (world.money >= cashUpgrade.seuil)}">Buy !</div>
+
+      </div>
+    </div>
+  </div>
+</div>
   <div id="deleteWorld">
     <button mat-raised-button color="primary" (click)="deleteWorld()">Delete World</button>
   </div>

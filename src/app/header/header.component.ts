@@ -12,10 +12,15 @@ export class HeaderComponent implements OnInit {
   user!: "";
   world! : World;
   _worldMoney!: number;
+  _username!: string;
   isLoaded: boolean = false;
 
   @Input() set worldMoney(valeur: number){
     this._worldMoney = valeur;
+  }
+
+  @Input() set username(valeur: string){
+    this._username = valeur;
   }
 
   constructor(public service: RestserviceService) {

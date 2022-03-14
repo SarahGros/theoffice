@@ -8,7 +8,7 @@
   <div id="revenu">{{product.revenu}} $</div>
   <div id="quantite">{{product.quantite}} {{product.name}}</div>
   <div id="button">
-    <button id="buyButton" (click)="onBuy()" [disabled]="pauvre">Buy x {{_qtmulti}}</button>
+    <button id="buyButton" (click)="onBuy()">Buy x {{_qtmulti}}</button>
   </div>
   <div id="cout">{{product.cout | number: '1.0-2'}} $</div>
 

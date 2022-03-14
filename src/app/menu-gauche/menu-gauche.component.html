@@ -1,6 +1,6 @@
 <main>
 <button (click)="onClickUnlocks()"> Unlocks </button>
-<button> Cash Upgrades </button>
+<button [matBadge]="badgeCashUpgrade" (click)="onClickCashUpgrade()"> Cash Upgrades </button>
 <button> Angel Upgrades </button>
 <button [matBadge]="badgeManager" (click)="onClickManager()"> Managers </button>
 </main>

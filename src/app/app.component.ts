@@ -24,6 +24,8 @@ export class AppComponent {
   showUnlocks: boolean = false;
   username!: string;
   isUsername!: boolean;
+  showCashUpgrades: boolean = false;
+  nombreCashUpgradePouvantEtreDebloque: number = 0;
 
 
   getServer(): string {
@@ -80,11 +82,21 @@ export class AppComponent {
 // méthode qui augmente l’argent (et le score) du joueur en fonction de ce que rapporte la production du produit
   onProductionDone(p: Product) {
     this.nombreManagerPouvantEtreRecrute = 0;
+    this.nombreCashUpgradePouvantEtreDebloque = 0;
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
     // On regarde pour chaque manager si on peut le débloquer
     for(let m in this.world.managers.pallier){
-      if(this.world.managers.pallier[m].seuil < this.world.money && !this.world.managers.pallier[m].unlocked) this.nombreManagerPouvantEtreRecrute++;
+      if(this.world.managers.pallier[m].seuil < this.world.money &&
+        !this.world.managers.pallier[m].unlocked
+        && this.world.products.product[this.world.managers.pallier[m].idcible-1].quantite > 0) this.nombreManagerPouvantEtreRecrute++;
+    }
+
+    // On regarde pour chaque cash upgrade si on peut le débloquer
+    for(let m in this.world.upgrades.pallier){
+      if(this.world.upgrades.pallier[m].seuil < this.world.money &&
+        !this.world.upgrades.pallier[m].unlocked
+        && this.world.products.product[this.world.upgrades.pallier[m].idcible-1].quantite > 0) this.nombreCashUpgradePouvantEtreDebloque++;
     }
   }
 //x1,x10,x100 uniquement si le joueur est en capacité financière d’acheter la quantité spécifiée.
@@ -106,6 +118,21 @@ export class AppComponent {
   }
   onBuyDone(c: number) {
     this.world.money -= c;
+    this.nombreManagerPouvantEtreRecrute = 0;
+    this.nombreCashUpgradePouvantEtreDebloque = 0;
+    // On regarde pour chaque manager si on peut le débloquer
+    for(let m in this.world.managers.pallier){
+      if(this.world.managers.pallier[m].seuil < this.world.money &&
+        !this.world.managers.pallier[m].unlocked
+        && this.world.products.product[this.world.managers.pallier[m].idcible-1].quantite > 0) this.nombreManagerPouvantEtreRecrute++;
+    }
+
+    // On regarde pour chaque cash upgrade si on peut le débloquer
+    for(let m in this.world.upgrades.pallier){
+      if(this.world.upgrades.pallier[m].seuil < this.world.money &&
+        !this.world.upgrades.pallier[m].unlocked
+        && this.world.products.product[this.world.upgrades.pallier[m].idcible-1].quantite > 0) this.nombreCashUpgradePouvantEtreDebloque++;
+    }
 
     // puisque achat de quantité pour un produit, on vérifie si les unlocks sont déblocables
     for(let x in this.products){
@@ -148,7 +175,6 @@ export class AppComponent {
   }
 
   onRecruterManager(manager: any){
-    console.log(this.world.money);
     if(this.world.money < manager.seuil) {
       this.snackBar.open('Pas assez d\'argent, achat impossible.', "", {duration: 2000});
     } else if(this.world.products.product[manager.idcible-1].quantite <= 0){
@@ -183,4 +209,36 @@ export class AppComponent {
 deleteWorld(){
     this.service.deleteWorld()
 }
+
+  onClickCashUpgrade() {
+    if(this.showCashUpgrades){
+      this.showCashUpgrades = false;
+    } else {
+      this.showCashUpgrades = true;
+    }
+  }
+
+  onBuyCashUpgrade(cashUpgrade: any) {
+    if(this.world.money < cashUpgrade.seuil) {
+      this.snackBar.open('Pas assez d\'argent, achat impossible.', "", {duration: 2000});
+    } else if(this.world.products.product[cashUpgrade.idcible-1].quantite <= 0){
+      this.snackBar.open('Vous ne pouvez pas acheter '+cashUpgrade.name+' si le produit n\'est pas débloqué !', "", {duration: 2000});
+    } else {
+      // Achat d'un cash upgrade
+      this.snackBar.open(cashUpgrade.name+" est acheté!", "", {duration: 2000});
+      // on enleve l'argent
+      this.world.money -= cashUpgrade.seuil;
+      // on passe le statut du manager a unlocked
+      cashUpgrade.unlocked = true;
+      // on augmente le gain ou la vitesse en fonction du typeratio
+      if(cashUpgrade.typeratio == 'gain'){
+        this.world.products.product[cashUpgrade.idcible-1].revenu *= cashUpgrade.ratio;
+      } else if(cashUpgrade.typeratio == 'vitesse'){
+        this.world.products.product[cashUpgrade.idcible-1].vitesse /= cashUpgrade.ratio;
+      }
+      this.products = this.world.products.product;
+      this.showManager = false;
+      this.nombreManagerPouvantEtreRecrute--;
+    }
+  }
 }

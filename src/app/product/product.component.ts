@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Product, World} from "../models/world";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-product',
@@ -15,7 +16,9 @@ export class ProductComponent implements OnInit {
   _qtmulti!: number;
   debutFabrication: boolean = false;
   prixInitial!: number;
+  revenuInitial!: number;
   pauvre: boolean = false;
+  produitDebloque: boolean = false;
 
   @Input() worldMoney: number = 0;
 
@@ -45,12 +48,13 @@ export class ProductComponent implements OnInit {
   @Output() notifyOnBuy : EventEmitter<number> = new
   EventEmitter<number>();
 
-  constructor() { }
+  constructor(private snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
     this.progressbarvalue = 0;
     this.prixInitial = this.product.cout;
+    this.revenuInitial = this.product.revenu;
 
     setInterval(() => {
       this.calcScore();
@@ -59,10 +63,15 @@ export class ProductComponent implements OnInit {
   }
 
   startFabrication() {
-    this.lastupdate = Date.now();
-    this.product.timeleft = this.product.vitesse;
-    this.progressbarvalue = 100;
-    this.debutFabrication = true;
+    // si produit non débloqué
+    if(!this.produitDebloque){
+      this.snackBar.open('Le produit n\'est pas débloqué.', "", {duration: 2000});
+    } else {
+      this.lastupdate = Date.now();
+      this.product.timeleft = this.product.vitesse;
+      this.progressbarvalue = 100;
+      this.debutFabrication = true;
+    }
   }
 
   changementMuliplicateur(){
@@ -120,12 +129,21 @@ export class ProductComponent implements OnInit {
     }
 
   onBuy() {
-    this.product.quantite = this.product.quantite + this._qtmulti;
-    this.notifyOnBuy.emit(this.product.cout);
-    if(this.product.quantite == 0){
-      this.calculProchainCout(this.product.quantite);
+    if(this.pauvre){
+      this.snackBar.open('Pas assez d\'argent.', "", {duration: 2000});
     } else {
-      this.calculProchainCout(this.product.quantite+1);
+      // on débloque le produit
+      if(this.product.quantite==0) this.produitDebloque = true;
+
+      // on ajoute la quantité, change le revenu et calcul le prochain cout
+      this.product.quantite = this.product.quantite + this._qtmulti;
+      this.product.revenu = this.revenuInitial * this.product.quantite;
+      this.notifyOnBuy.emit(this.product.cout);
+      if(this.product.quantite == 0){
+        this.calculProchainCout(this.product.quantite);
+      } else {
+        this.calculProchainCout(this.product.quantite+1);
+      }
     }
   }
 

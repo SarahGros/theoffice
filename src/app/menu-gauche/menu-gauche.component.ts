@@ -13,8 +13,12 @@ export class MenuGaucheComponent implements OnInit {
   @Output() clickOnUnlocks : EventEmitter<boolean> = new
   EventEmitter<boolean>();
 
+  @Output() clickOnCashUpgrade : EventEmitter<boolean> = new
+  EventEmitter<boolean>();
+
   @Input() badgeManager: number = 0;
   @Input() badgeUnlocks: number = 0;
+  @Input() badgeCashUpgrade: number = 0;
 
   constructor() { }
 
@@ -27,6 +31,10 @@ export class MenuGaucheComponent implements OnInit {
 
   onClickUnlocks(){
     this.clickOnUnlocks.emit();
+  }
+
+  onClickCashUpgrade(){
+    this.clickOnCashUpgrade.emit();
   }
 
 }

@@ -85,6 +85,7 @@ export class AppComponent {
     this.nombreCashUpgradePouvantEtreDebloque = 0;
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
+
     // On regarde pour chaque manager si on peut le débloquer
     for(let m in this.world.managers.pallier){
       if(this.world.managers.pallier[m].seuil < this.world.money &&

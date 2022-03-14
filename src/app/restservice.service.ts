@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { World, Pallier, Product } from './models/world';
@@ -42,4 +42,67 @@ export class RestserviceService {
       this.server + "adventureisis/generic/world"
     ).toPromise().catch(this.handleError);
   }
+
+  private setHeaders(user: string): HttpHeaders {
+    var headers = new HttpHeaders({ 'X-User': user });
+    return headers;
+  }
+
+  public putProduit(product: Product): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/product", product, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  public putManager(manager: Pallier): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/manager", manager, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  public putUnlock(unlock: Pallier): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/unlock", unlock, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  public putUpgrade(upgrade: Pallier): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/upgrade", upgrade, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  public putAllUnlocks(allunlock: Pallier): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/allunlock", allunlock, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+  public putWorld(world: World): Promise<Response> {
+    return this.http.put(this.server + "adventureisis/generic/world", world, {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise()
+      .catch(this.handleError);
+  }
+
+
+  public deleteWorld(): Promise<Response> {
+    return this.http.delete(this.server + "adventureisis/generic/world", {
+      headers: this.setHeaders(this.user)
+    })
+      .toPromise().then(response => response)
+      .catch(this.handleError);
+  }
+
 }

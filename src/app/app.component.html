@@ -1,17 +1,12 @@
-<!--
-Un bandeau gauche spécifiant les boutons cliquables permettant d’afficher des fenêtres supplémentaires
-décrivant des éléments supplémentaires du jeu ;
-• Une partie centrale listant les produits et leurs éléments d’interaction.
--->
-<div *ngIf="!isUsername">
+<div id="username" *ngIf="!isUsername">
   Username :<input type="text" [(ngModel)]="username"/>
   <button mat-raised-button color="primary" (click)="onUsernameRandom()">Random</button>
   <button mat-raised-button color="primary" (click)="onUsernameChanged()">Valider</button>
-
 </div>
-<body *ngIf="isLoaded && isUsername" >
+
+<body *ngIf="isLoaded && isUsername">
 <app-header [worldMoney]="world.money"></app-header>
-<button (click)="multiplicateurAchatProduit()">{{MultiplicateurButton}}</button>
+<button id="multiplicateurButton" (click)="multiplicateurAchatProduit()">{{MultiplicateurButton}}</button>
 
 <div class="main">
   <div class="menu_gauche">
@@ -21,46 +16,48 @@ décrivant des éléments supplémentaires du jeu ;
   </div>
   <div class="product">
     <div *ngFor="let currentProduct of products">
-      <app-product [worldMoney]="world.money" [qtmulti]="qtmulti" [prod]="currentProduct" class="product col-md-6" (notifyProduction)="onProductionDone($event)" (notifyOnBuy)="onBuyDone($event)"></app-product>
+      <app-product [worldMoney]="world.money" [qtmulti]="qtmulti" [prod]="currentProduct" class="product col-md-6"
+                   (notifyProduction)="onProductionDone($event)" (notifyOnBuy)="onBuyDone($event)"></app-product>
     </div>
   </div>
   <div *ngIf="showUnlocks" class="modal">
-    <div><h1 class="title">Les unlocks</h1></div> <div>
-    <div *ngFor="let product of products">
-      <div *ngFor="let pallier of product.palliers.pallier">
-        <div class="unlocklayout" *ngIf="!pallier.unlocked">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+pallier.logo" /> </div>
+    <div><h1 class="title">Les unlocks</h1></div>
+    <div>
+      <button class="closebutton" mat-raised-button color="primary" (click)="showUnlocks = !showUnlocks">Fermer</button>
+      <div *ngFor="let product of products">
+        <div *ngFor="let pallier of product.palliers.pallier">
+          <div class="layout" *ngIf="!pallier.unlocked">
+            <div>
+              <div class="logo"><img class="round" [attr.src]="server+pallier.logo"/></div>
+            </div>
+            <div class="name">{{ pallier.name}} </div>
+            <div class="cible">Need {{ pallier.seuil}} {{ product.name}}s </div>
           </div>
-          <div class="unlockname">Nom:{{ pallier.name}} </div>
-          <div class="munlockcible">Cible:{{ product.name}} </div>
-          <div class="unlockcost">Seuil:{{ pallier.seuil}} </div>
-          <div class="unlocktyperatio">Type:{{ pallier.typeratio}} </div>
-          <div class="unlockratio">Ratio:{{ pallier.ratio}} </div>
         </div>
       </div>
-    </div>
-    <button class="closebutton" mat-raised-button color="primary" (click)="showUnlocks = !showUnlocks">Fermer</button>
-  </div>
+      </div>
   </div>
   <div *ngIf="showManager" class="modal">
-    <div><h1 class="title">Les managers</h1></div> <div>
-    <div *ngFor="let manager of world.managers.pallier">
-      <div class="managerslayout" *ngIf="!manager.unlocked">
-        <div>
-          <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
-        </div>
-        <div class="managername">Nom:{{ manager.name}} </div>
-        <div class="managercible">Cible:{{ world.products.product[manager.idcible-1].name}}
-          <div class="managercost">Seuil:{{ manager.seuil}} </div> </div>
-        <div>
+    <div><h1 class="title">Les managers !</h1></div>
+    <div>
+      <button class="closebutton" mat-raised-button color="primary" (click)="showManager = !showManager">Fermer
+      </button>
+      <div *ngFor="let manager of world.managers.pallier">
+        <div class="layout" *ngIf="!manager.unlocked">
+          <div>
+            <div class="logo"><img id="imgmanager" class="round" [attr.src]="server+manager.logo"/></div>
+          </div>
+          <div class="name">{{ manager.name}} </div>
+          <div class="cible">Takes charge of {{ world.products.product[manager.idcible - 1].name}}s</div>
+
           <div class="hirebutton" (click)="onRecruterManager(manager)"
-               [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Engager !</div>
+               [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+
         </div>
       </div>
     </div>
-    <button class="closebutton" mat-raised-button color="primary" (click)="showManager = !showManager">Fermer</button>
     </div>
   </div>
-</div>
-<!--<mat-slider min="1" max="100" step="1" value="50"></mat-slider>-->
+  <div id="deleteWorld">
+    <button mat-raised-button color="primary" (click)="deleteWorld()">Delete World</button>
+  </div>

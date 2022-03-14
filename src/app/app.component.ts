@@ -106,7 +106,6 @@ export class AppComponent {
   }
   onBuyDone(c: number) {
     this.world.money -= c;
-    console.log("ici");
 
     // puisque achat de quantité pour un produit, on vérifie si les unlocks sont déblocables
     for(let x in this.products){
@@ -116,7 +115,6 @@ export class AppComponent {
         // on l'unlock
         console.log(this.products[x].name + " " +this.products[x].palliers.pallier[y].seuil + " " +this.products[x].quantite)
         if(this.products[x].palliers.pallier[y].seuil <= this.products[x].quantite && !this.products[x].palliers.pallier[y].unlocked){
-          console.log("okkk");
           this.products[x].palliers.pallier[y].unlocked = true;
           if(this.products[x].palliers.pallier[y].typeratio == 'vitesse'){
             this.products[x].vitesse = this.products[x].vitesse/this.products[x].palliers.pallier[y].ratio;
@@ -178,8 +176,11 @@ export class AppComponent {
   }
 
   onUsernameRandom(){
-    this.username = Math.floor(Math.random() * 10000) + 'Concombre';
+    this.username = Math.floor(Math.random() * 10000) + 'Manager';
     this.onUsernameChanged();
   }
 
+deleteWorld(){
+    this.service.deleteWorld()
+}
 }

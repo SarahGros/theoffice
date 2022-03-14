@@ -56,7 +56,6 @@ export class ProductComponent implements OnInit {
       this.calcScore();
       }, 100);
     if (this.qtmulti && this.product) this.calcMaxCanBuy();
-    this.product.logo = "assets/mug.jpeg";
   }
 
   startFabrication() {

@@ -8,6 +8,31 @@ body{
   grid-template-rows: 20% 80%;
   width: 87%;
 }
+#multiplicateurButton{
+  display: block;
+  position: relative;
+  cursor: pointer;
+
+  width: 60px;
+  height: 60px;
+  margin: 0 240px;
+
+  background-color: black;
+  border: none;
+  border-radius: 50%;
+
+
+  font-size: 1.5em;
+  font-family: "Work Sans", sans-serif;
+  color : #FFFFFF;
+  text-align: center;
+
+  &:hover {
+    background-color: #FFFFFF;
+    color: black;
+    transition: background .3s 0.1s;
+  }
+}
 
 .product {
   grid-column: 2;
@@ -23,11 +48,12 @@ body{
 .modal {
   position: fixed; /* reste en place */
   z-index: 2; /* au dessus du reste */
-  width: 800px; /* largeur */
-  height: 400px; /* hauteur */
-  overflow: auto; /* barre de scroll si besoin */ background-color: white; /* opaque */
+  width: 650px; /* largeur */
+  height: 650px; /* hauteur */
+  overflow: auto; /* barre de scroll si besoin */
+  background-color: white; /* opaque */
   border: solid;
-  top:10; /* a 10% du haut */ left:20%; /* a 20% de la gauche */
+  top:10%; /* a 10% du haut */ left:25%; /* a 20% de la gauche */
 }
 
 img{
@@ -37,51 +63,72 @@ img{
 }
 .title{
   text-align: center;
+  font-family: "Typewriter Serial";
+  color: black;
 }
 button{
   margin-right: 10px;
 }
-.managerslayout{
-  display: table;
-  margin: 0 auto;
-  border: 1px solid black;
+.layout{
+  display: grid;
+  grid-template-rows: 1fr fit-content(20px);
+  grid-template-columns: 1fr 1fr 2fr;
+  grid-gap: 1em;
+  width: auto;
 }
-.managerslayout:hover{
+.layout:hover{
   border-radius: 10px;
   background-color: lightblue;
 }
 .logo{
-  display: table-cell;
-  vertical-align: middle;
+  grid-row: 1;
+  grid-column: 1;
+}
+#imgmanager{
+  height: 100%;
+  width: 100%;
 }
 
-.managername{
+.name{
+  grid-column: 2;
+  grid-row: 1;
   margin-top: 10px;
   font-weight: bold;
-  color: #0ca6e3;
+  text-align: center;
+  color: #5D00FF;
 }
 
-.managercible{
-  margin-top: 5px;
-  margin-bottom: 5px;
+.cible{
+  grid-column: 2;
+  grid-row: 1;
+  margin-top: 30px;
   font-size:85%;
+  text-align: center;
   color : grey;
 }
-.managercost{
-  margin-bottom: 10px;
-}
+
 .hirebutton{
   border: 1px solid black;
+  background-color: #5D00FF;
+  color: #FFFFFF;
+  font-family: "Typewriter Serial";
+  text-align: center;
+  border-radius: .4em;
+  margin-top: 30px;
+  width: 20%;
+  height: 20px;
 }
 
 .hirebutton:hover{
   cursor: pointer;
-}
+  background-color: #FFFFFF;
+  color: #5D00FF;
+  transition: 0.3s;
+  border-color: #5D00FF;
 
-.hirebutton{
-  border: 1px solid black;
 }
-
-.hirebutton:hover{
-  cursor: pointer;
+.closebutton{
+  position: sticky;
+  margin-top: -100px;
+  margin-left: 560px;
 }
